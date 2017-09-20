@@ -45,6 +45,7 @@ public class NewsFrontAction {
 	public String sendnews(HttpServletRequest request,HttpServletResponse response			
 			,Model model) {
 		
-		HttpRequstUtil.defaultPost(eLink, eArgs, enCode);
+//		HttpRequstUtil.defaultPost(eLink, eArgs, enCode);
+		return null;
 	}
 }

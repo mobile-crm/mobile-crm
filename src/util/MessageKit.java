@@ -3,11 +3,14 @@ package util;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
-import util.JsonUtil;
+
 import util.StringUtil;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+
+import com.alibaba.fastjson.JSON;
 
 
 
@@ -89,6 +92,6 @@ public class MessageKit {
 			reMap.put("code", code);
 			reMap.put("msg", msg);			
 		}		
-		displayMessage(response, JsonUtil.toJson(reMap));
+		displayMessage(response, JSON.toJSONString(reMap));
 	}
 }

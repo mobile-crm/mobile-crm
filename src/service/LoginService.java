@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.json.simple.JSONObject;
 import org.omg.CORBA.DATA_CONVERSION;
 
 import util.CookieUtil;

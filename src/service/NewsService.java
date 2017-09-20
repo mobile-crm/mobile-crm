@@ -7,14 +7,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
-import org.apache.commons.collections.iterators.EntrySetMapIterator;
+
+
+
 import org.apache.log4j.Logger;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import util.HttpRequstUtil;
-import util.JsonUtil;
 import util.StringUtil;
 import vo.News;
 import app.weixin.message.resp.Article;
@@ -103,7 +106,8 @@ public class NewsService {
 						Map mapResult=null;
 						String uploadMediaResult=WeixinUtil.uploadMedia(localRootPath+n.getPicpath(), at.getToken(), "image");//图片虚拟路径是否可以？
 						try{
-							mapResult=(Map)JsonUtil.toBean(uploadMediaResult, HashMap.class);
+							//mapResult=(Map)JsonUtil.toBean(uploadMediaResult, HashMap.class);
+							mapResult=JSON.parseObject(uploadMediaResult, Map.class);
 						}catch(Exception e){
 							logger.error("",e);
 						}

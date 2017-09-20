@@ -14,10 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.fastjson.JSON;
+
 import service.AutoanswerService;
 import service.LoginService;
 import service.QuestionrecordService;
-import util.JsonUtil;
 import util.ParamUtil;
 import util.MessageKit;
 import util.Page;
@@ -233,6 +234,6 @@ public class AutoanswerAction {
 		String question=ParamUtil.getParameter(request, "question");
 		AutoanswerService.getInstance().delKeyWordsList();//清除答案缓存
 		List<Autoanswer> list=new QuestionrecordService().getAutoAnswer(question);
-		MessageKit.displayMessage(response, JsonUtil.toJson(list));		
+		MessageKit.displayMessage(response, JSON.toJSONString(list));		
 	}
 }

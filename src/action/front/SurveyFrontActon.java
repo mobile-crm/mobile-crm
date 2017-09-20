@@ -44,7 +44,8 @@ public class SurveyFrontActon {
 		r.setSurveyId(surveyId);
 		r.setQuestionId(1);
 		r.setOptionId(ParamUtil.getIntegerParameter(request, "testOption"));
-		r.setWeixincode(weixincode);
+//		r.setWeixincode(weixincode);
 		r.setCreateDate(new Date());
+		return null;
 	}
 }

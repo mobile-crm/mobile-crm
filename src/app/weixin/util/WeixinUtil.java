@@ -31,15 +31,19 @@ import javax.net.ssl.TrustManager;
 
 
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;  
-import net.sf.json.JSONException;  
+
+
+
+
 
 import org.slf4j.Logger;  
 import org.slf4j.LoggerFactory;  
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import util.HttpRequstUtil;
-import util.JsonUtil;
 import util.OsCache;
 import app.weixin.pojo.AccessToken;
 import app.weixin.pojo.Menu;
@@ -53,9 +57,9 @@ import app.weixin.pojo.Menu;
 public class WeixinUtil {  
     private static Logger log = LoggerFactory.getLogger(WeixinUtil.class);  
     // 第三方用户唯一凭证  
-    public static String appId = "wx357aaac95c32863d";  
+    public static String appId = "";  
     // 第三方用户唯一凭证密钥  
-    public static String appSecret = "526729b8b25ea1b3d26a85a14e195544"; 
+    public static String appSecret = ""; 
     // 获取access_token的接口地址（GET） 限200（次/天）  
     public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
     // 菜单创建（POST） 限100（次/天）  
@@ -131,7 +135,7 @@ public class WeixinUtil {
             inputStream.close();  
             inputStream = null;  
             httpUrlConn.disconnect();  
-            jsonObject = JSONObject.fromObject(buffer.toString());  
+            jsonObject = JSONObject.parseObject(buffer.toString());  
         } catch (ConnectException ce) {  
             log.error("Weixin server connection timed out.");  
         } catch (Exception e) {  
@@ -163,11 +167,11 @@ public class WeixinUtil {
 	            try {  
 	                accessToken = new AccessToken();  
 	                accessToken.setToken(jsonObject.getString("access_token"));  
-	                accessToken.setExpiresIn(jsonObject.getInt("expires_in"));  
-	            } catch (JSONException e) {  
+	                accessToken.setExpiresIn(jsonObject.getInteger("expires_in"));  
+	            } catch (Exception e) {  
 	                accessToken = null;  
 	                // 获取token失败  
-	                log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+	                log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInteger("errcode"), jsonObject.getString("errmsg"));  
 	            }  
 	        }
 	        if(accessToken!=null){
@@ -189,14 +193,14 @@ public class WeixinUtil {
         // 拼装创建菜单的url  
         String url = menu_create_url.replace("ACCESS_TOKEN", accessToken);  
         // 将菜单对象转换成json字符串  
-        String jsonMenu = JSONObject.fromObject(menu).toString();  
+        String jsonMenu = JSONObject.toJSONString(menu);  
         // 调用接口创建菜单  
         JSONObject jsonObject = httpRequest(url, "POST", jsonMenu);  
       
         if (null != jsonObject) {  
-            if (0 != jsonObject.getInt("errcode")) {  
-                result = jsonObject.getInt("errcode");  
-                log.error("创建菜单失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            if (0 != jsonObject.getIntValue("errcode")) {  
+                result = jsonObject.getIntValue("errcode");  
+                log.error("创建菜单失败 errcode:{} errmsg:{}", jsonObject.getIntValue("errcode"), jsonObject.getString("errmsg"));  
             }  
         }  
       
@@ -216,9 +220,9 @@ public class WeixinUtil {
         JSONObject jsonObject = httpRequest(url, "GET",null );  
       
         if (null != jsonObject) {  
-            if (0 != jsonObject.getInt("errcode")) {  
-                result = jsonObject.getInt("errcode");  
-                log.error("删除菜单失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            if (0 != jsonObject.getIntValue("errcode")) {  
+                result = jsonObject.getIntValue("errcode");  
+                log.error("删除菜单失败 errcode:{} errmsg:{}", jsonObject.getIntValue("errcode"), jsonObject.getString("errmsg"));  
             }  
         }  
       
@@ -238,9 +242,9 @@ public class WeixinUtil {
         JSONObject jsonObject = httpRequest(url, "GET",null );  
       
         if (null != jsonObject) {  
-            if (0 != jsonObject.getInt("errcode")) {  
-                result = jsonObject.getInt("errcode");  
-                log.error("查询菜单失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            if (0 != jsonObject.getIntValue("errcode")) {  
+                result = jsonObject.getIntValue("errcode");  
+                log.error("查询菜单失败 errcode:{} errmsg:{}", jsonObject.getIntValue("errcode"), jsonObject.getString("errmsg"));  
             }  
         }  
       
@@ -252,13 +256,13 @@ public class WeixinUtil {
         // 拼装创建菜单的url  
         String url = upload_news_url.replace("ACCESS_TOKEN", accessToken);  
         // 换成json字符串  
-        String json = JSONObject.fromObject(news).toString();  
+        String json = JSONObject.toJSONString(news);  
         // 调用接口创建菜单  
         JSONObject jsonObject = httpRequest(url, "POST", json);  
       
         if (null != jsonObject) {  
-            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getInt("errcode")) {                   
-                log.error("推送新闻失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getIntValue("errcode")) {                   
+                log.error("推送新闻失败 errcode:{} errmsg:{}", jsonObject.getIntValue("errcode"), jsonObject.getString("errmsg"));  
             }else{
             	result=jsonObject.getString("media_id");
             }
@@ -300,14 +304,14 @@ public class WeixinUtil {
         // 拼装创建菜单的url  
         String url = qun_send_url.replace("ACCESS_TOKEN", accessToken);  
         // 换成json字符串  
-        String json = JSONObject.fromObject(params).toString();
+        String json = JSONObject.toJSONString(params);
         // 调用接口删除菜单  
         JSONObject jsonObject = httpRequest(url, "POST",json );  
       
         if (null != jsonObject) {  
-            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getInt("errcode")) {  
-                result = jsonObject.getInt("errcode");  
-                log.error("查询菜单失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getIntValue("errcode")) {  
+                result = jsonObject.getIntValue("errcode");  
+                log.error("查询菜单失败 errcode:{} errmsg:{}", jsonObject.getIntValue("errcode"), jsonObject.getString("errmsg"));  
             }  
         }  
       
@@ -322,8 +326,8 @@ public class WeixinUtil {
         JSONObject jsonObject = httpRequest(url, "GET",null );  
       
         if (null != jsonObject) {  
-            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getInt("errcode")) {               
-                log.error("查询分组失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getIntValue("errcode")) {               
+                log.error("查询分组失败 errcode:{} errmsg:{}", jsonObject.getIntValue("errcode"), jsonObject.getString("errmsg"));  
                 return null;
             } 
             JSONArray jsonArray=jsonObject.getJSONArray("groups");           
@@ -346,8 +350,8 @@ public class WeixinUtil {
         // 调用接口删除菜单  
         JSONObject jsonObject = httpRequest(url, "GET",null );
         if (null != jsonObject) {  
-            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getInt("errcode")) {               
-                log.error("查询失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getIntValue("errcode")) {               
+                log.error("查询失败 errcode:{} errmsg:{}", jsonObject.getIntValue("errcode"), jsonObject.getString("errmsg"));  
                 return null;
             }             
         }  
@@ -368,8 +372,8 @@ public class WeixinUtil {
         JSONObject jsonObject = httpRequest(url, "POST",json );
         log.error("jsonObject"+jsonObject);
         if (null != jsonObject) {  
-            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getInt("errcode")) {               
-                log.error("查询失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            if (jsonObject.get("errcode")!=null&&0 != jsonObject.getIntValue("errcode")) {               
+                log.error("查询失败 errcode:{} errmsg:{}", jsonObject.getIntValue("errcode"), jsonObject.getString("errmsg"));  
                 return jsonObject;
             }             
         }  
@@ -391,7 +395,7 @@ public class WeixinUtil {
 		Map<String, Object> contentMap=new HashMap<String, Object>();
 		contentMap.put("content", content);
 		map.put("text", contentMap);
-		JSONObject jsonObject = sendInfo(JsonUtil.toJson(map), accessToken);
+		JSONObject jsonObject = sendInfo(JSON.toJSONString(map), accessToken);
 		return jsonObject;
 	}
 //    public static void main(String[] args) {

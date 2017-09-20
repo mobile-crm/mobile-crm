@@ -8,7 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
+
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.alibaba.fastjson.JSONObject;
 
 import app.weixin.pojo.AccessToken;
 import app.weixin.util.WeixinUtil;
@@ -275,7 +278,7 @@ public class QuestionrecordAction {
 		Integer id=ParamUtil.getIntegerParameter(request, "id");
 		AccessToken at =WeixinUtil.getAccessToken(WeixinUtil.appId, WeixinUtil.appSecret);
 		JSONObject jo=WeixinUtil.sendTextInfo(touser, content, at.getToken());
-		if(jo!=null&&jo.getInt("errcode")==0){
+		if(jo!=null&&jo.getIntValue("errcode")==0){
 			//本地记录回复内容
 			Map<String, Object> map=new HashMap<String, Object>();
 			map.put("answer_set", content);

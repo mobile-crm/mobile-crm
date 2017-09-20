@@ -6,13 +6,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.ui.Model;
 
 public class Page {
 	
-	private final static Log log = LogFactory.getLog(Page.class);
+	private final static Logger log = Logger.getLogger(Page.class);
 	private final static int pageMaxSize = 50;//每页最多50条记录
 	/**
 	 * 计算总共多少页

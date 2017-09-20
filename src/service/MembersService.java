@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
+
+import com.alibaba.fastjson.JSONObject;
 
 import app.weixin.pojo.AccessToken;
 import app.weixin.util.WeixinUtil;
@@ -51,7 +51,7 @@ public class MembersService {
 					m.setCity(jObj.getString("city"));
 					m.setProvince(jObj.getString("province"));
 					m.setCountry(jObj.getString("country"));
-					m.setSex(jObj.getInt("sex"));
+					m.setSex(jObj.getIntValue("sex"));
 					m.setHeadimgurl(jObj.getString("headimgurl"));
 					m.setNickname(jObj.getString("nickname"));
 					m.setFocusTime(new Date(jObj.getLong("subscribe_time")*1000));

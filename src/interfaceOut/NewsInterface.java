@@ -68,7 +68,7 @@ public class NewsInterface {
 		params.put("status", status);
 		params.put("notDel", 1);
 		
-		String respMessage = NewsService.getXmlNewsList(params, "", "", 1, 10, MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+		String respMessage = NewsService.getInstance().getXmlNewsList(params, "", "", 1, 10, MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 		MessageKit.displayMessage(response, respMessage);
 	}
 	@RequestMapping(value = "/get.do")

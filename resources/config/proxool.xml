@@ -3,12 +3,12 @@
 
 <proxool>
     <alias>defaultDB</alias>
-    <driver-url>jdbc:mysql://sqld.duapp.com:4050/HJPgdUrVstGRfKbQbRVT?useUnicode=true&amp;characterEncoding=utf-8</driver-url>
+    <driver-url>jdbc:mysql://192.168.33.53:4050/HJPgdUrVstGRfKbQbRVT?useUnicode=true&amp;characterEncoding=utf-8</driver-url>
     <driver-class>com.mysql.jdbc.Driver</driver-class>
     <statistics>1m,15m,1d</statistics> 
     <driver-properties>
-      <property name="user" value="cztCWE9APisyvKIaF0b4qWwZ"/>
-      <property name="password" value="cwLEG8hmDxYGVFCUbXNpL0PuO5lLkz1v"/>
+      <property name="user" value="root"/>
+      <property name="password" value="12wqasxz"/>
     </driver-properties>
     <maximum-connection-count>100</maximum-connection-count>  <!--最大连接数(默认5个),超过了这个连接数,再有请求时,就排在队列中等候,最大的等待请求数由maximum-new-connections决定-->   
     <minimum-connection-count>2</minimum-connection-count>  <!--最小连接数(默认2个)-->   
@@ -20,12 +20,12 @@
 
 <proxool>
     <alias>defaultDB_s0</alias>
-    <driver-url>jdbc:mysql://sqld.duapp.com:4050/HJPgdUrVstGRfKbQbRVT?useUnicode=true&amp;characterEncoding=utf-8</driver-url>
+    <driver-url>jdbc:mysql://192.168.33.53:4050/HJPgdUrVstGRfKbQbRVT?useUnicode=true&amp;characterEncoding=utf-8</driver-url>
     <driver-class>com.mysql.jdbc.Driver</driver-class>
     <statistics>1m,15m,1d</statistics> 
     <driver-properties>
-      <property name="user" value="cztCWE9APisyvKIaF0b4qWwZ"/>
-      <property name="password" value="cwLEG8hmDxYGVFCUbXNpL0PuO5lLkz1v"/>
+      <property name="user" value="root"/>
+      <property name="password" value="12wqasxz"/>
     </driver-properties>
     <maximum-connection-count>100</maximum-connection-count>  <!--最大连接数(默认5个),超过了这个连接数,再有请求时,就排在队列中等候,最大的等待请求数由maximum-new-connections决定-->   
     <minimum-connection-count>2</minimum-connection-count>  <!--最小连接数(默认2个)-->   
